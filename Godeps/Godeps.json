@@ -1,0 +1,6 @@
+{
+	"ImportPath": "github.com/Focinfi/sakura",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v61",
+	"Deps": []
+}
