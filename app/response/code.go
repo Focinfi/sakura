@@ -14,4 +14,6 @@ const (
 	JSONBodyParsingError = 9001
 	// ActionIsNotAllowed for action error
 	ActionIsNotAllowed = 9002
+	// LoginTokenIsWorng for bad login_token
+	LoginTokenIsWorng = 9003
 )

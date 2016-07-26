@@ -13,7 +13,7 @@ type DataBase struct {
 	Name     string `default:"sakura_test" env:"POSTGRESQL_INSTANCE_NAME"`
 	Host     string `default:"127.0.0.1" env:"POSTGRESQL_PORT_5432_TCP_ADDR"`
 	Port     string `default:"5432" env:"POSTGRESQL_PORT_5432_TCP_PORT"`
-	User     string `default:"postgres" env:"POSTGRESQL_USERNAME"`
+	User     string `default:"frank" env:"POSTGRESQL_USERNAME"`
 	Password string `env:"POSTGRESQL_PASSWORD"`
 }
 
@@ -27,7 +27,7 @@ type Redis struct {
 
 // Config contains application configuration
 var Config = struct {
-	Port       uint `default:"5290" env:"PORT"`
+	Port       uint `default:"1024" env:"PORT"`
 	DataBase   DataBase
 	Redis      Redis
 	Env        string `default:"test" env:"APP_ENV"`
@@ -53,6 +53,7 @@ func init() {
 	}
 }
 
+// IsProduction check if production environment
 func IsProduction() bool {
 	return Config.Env == "production"
 }

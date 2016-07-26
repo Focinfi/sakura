@@ -1,4 +1,4 @@
-package config
+package routes
 
 import (
 	"github.com/Focinfi/sakura/app/handlers"

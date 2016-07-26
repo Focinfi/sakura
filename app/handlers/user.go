@@ -1,6 +1,6 @@
 package handlers
 
-import "github.com/focinfi/sakura/app/models"
+import "github.com/Focinfi/sakura/app/models"
 
 // NewUser for new action
 func NewUser(c *models.Context) {

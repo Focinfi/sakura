@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	"github.com/Focinfi/sakura/app/models"
 	"github.com/Focinfi/sakura/app/response"
-	"github.com/focinfi/sakura/app/models"
 	"github.com/gin-gonic/gin"
 )
 

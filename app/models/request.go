@@ -16,6 +16,7 @@ type RequestParams struct {
 	Action      string `json:"action"`
 	ActionToken string `json:"action_token"`
 	UserID      string `json:"user_id"`
+	LoginToken  string `json:"login_token"`
 
 	User *User `json:"user"`
 }

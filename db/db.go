@@ -3,10 +3,10 @@ package db
 import (
 	"fmt"
 
+	"github.com/Focinfi/sakura/config"
 	log "github.com/cihub/seelog"
-	"github.com/focinfi/sakura/config"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/qor/media_library"
 	"github.com/qor/publish"
 	"github.com/qor/sorting"
@@ -45,6 +45,10 @@ func init() {
 	dbConfig := config.Config.DataBase
 	DB, err = gorm.Open("postgres", fmt.Sprintf("host='%v' port='%v' user='%v' password='%v' dbname='%v' sslmode=disable",
 		dbConfig.Host, dbConfig.Port, dbConfig.User, dbConfig.Password, dbConfig.Name))
+
+	if err != nil {
+		panic(err)
+	}
 
 	// SetMaxOpenConns
 	DB.DB().SetMaxOpenConns(50)
