@@ -1,9 +1,9 @@
 package handlers
 
 import (
+	"github.com/Focinfi/sakura/app/errors"
 	"github.com/Focinfi/sakura/app/models"
 	"github.com/Focinfi/sakura/app/response"
-	"github.com/Focinfi/sakura/app/services"
 	"github.com/gin-gonic/gin"
 )
 
@@ -50,7 +50,7 @@ func (base *Base) Handle(c *gin.Context) {
 	// Dispatch task
 	handler, ok := base.Handlers[requestParams.Action]
 	if !ok {
-		response.Failed(c, services.ActionIsNotAllowed, "")
+		response.Failed(c, errors.ActionIsNotAllowed, "")
 		c.Abort()
 		return
 	}

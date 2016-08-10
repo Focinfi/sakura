@@ -1,4 +1,4 @@
-package services
+package errors
 
 // Code for response code
 type Code int
@@ -16,4 +16,6 @@ const (
 	EmailIsWrong = 9004
 	// PhoneIsWrong for wrong phone
 	PhoneIsWrong = 9005
+	// PhoneVerificationCodeIsWrong for wrong verification code
+	PhoneVerificationCodeIsWrong = 9006
 )

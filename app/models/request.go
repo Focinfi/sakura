@@ -28,6 +28,7 @@ type RequestParams struct {
 	LoginToken  string `json:"login_token"`
 	Locale      string `json:"locale"`
 
-	User             *User `json:"user,omitempty"`
-	RegistrationType int   `json:"registration_type,omitempty"`
+	User             *User  `json:"user,omitempty"`
+	RegistrationType int    `json:"registration_type,omitempty"`
+	VerificationCode string `json:"verification_code"`
 }

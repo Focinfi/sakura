@@ -1,4 +1,4 @@
-package services
+package errors
 
 import "github.com/Focinfi/sakura/app/i18n"
 
@@ -21,7 +21,10 @@ func (e err) Message(locale string) string {
 	return i18n.T("", i18n.Locale(locale))
 }
 
-// NewError allocates and returns a new ErrorFunc
-func NewError(code Code, messageKey string) Error {
+// New allocates and returns a new ErrorFunc
+func New(code Code, messageKey string) Error {
 	return err{code: code, messageKey: messageKey}
 }
+
+// InternalServerError for internal server error
+var InternalServerError = New(Code(500), "internal_server_error_please_retry")

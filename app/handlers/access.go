@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"github.com/Focinfi/sakura/app"
+	"github.com/Focinfi/sakura/app/errors"
 	"github.com/Focinfi/sakura/app/response"
-	"github.com/Focinfi/sakura/app/services"
 	"github.com/Focinfi/sakura/libs/token"
 	"github.com/gin-gonic/gin"
 )
@@ -23,7 +23,7 @@ func AccessAuth(c *gin.Context) {
 	}
 
 	if requestParams.UserID != "" && token.CheckWithVals(requestParams.LoginToken, vals) {
-		response.Failed(c, services.LoginTokenIsWorng, "login_token is wrong")
+		response.Failed(c, errors.LoginTokenIsWorng, "login_token is wrong")
 		c.Abort()
 		return
 	}
