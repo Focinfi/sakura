@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/Focinfi/sakura/app/models"
 	"github.com/Focinfi/sakura/app/response"
+	"github.com/Focinfi/sakura/app/services"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +12,7 @@ func ParseParams(c *gin.Context) {
 	// Parsing Params
 	params := &models.RequestParams{}
 	if err := c.Bind(params); err != nil {
-		response.Failed(c, response.JSONBodyParsingError, "failed to parsing JOSN boday")
+		response.Failed(c, services.JSONBodyParsingError, "failed to parsing JOSN boday")
 		c.Abort()
 		return
 	}

@@ -8,7 +8,7 @@ import (
 
 // Response for response struct
 type Response struct {
-	Code    Code        `json:"code,string"`
+	Code    int         `json:"code,string"`
 	Action  interface{} `json:"action,string"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
@@ -23,14 +23,14 @@ func JSON(c *gin.Context, response Response) {
 // OK for successful request
 func OK(c *gin.Context, data interface{}) {
 	JSON(c, Response{
-		Code:    StatusOK,
+		Code:    200,
 		Message: "ok",
 		Data:    data,
 	})
 }
 
 // Failed for failing request
-func Failed(c *gin.Context, code Code, message string) {
+func Failed(c *gin.Context, code int, message string) {
 	JSON(c, Response{
 		Code:    code,
 		Message: message,
@@ -41,7 +41,7 @@ func Failed(c *gin.Context, code Code, message string) {
 // ServerError for internal procedure panic
 func ServerError(c *gin.Context, message string) {
 	JSON(c, Response{
-		Code:    StatusInternalServerError,
+		Code:    500,
 		Message: message,
 		Data:    nil,
 	})

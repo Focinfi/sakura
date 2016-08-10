@@ -1,13 +1,9 @@
-package response
+package services
 
 // Code for response code
 type Code int
 
 const (
-	// StatusOK for 200
-	StatusOK Code = 200
-	// StatusInternalServerError for 500
-	StatusInternalServerError = 500
 	// AccessTokenIsWrong for access_token error
 	AccessTokenIsWrong = 9000
 	// JSONBodyParsingError for json parsing error
@@ -16,4 +12,8 @@ const (
 	ActionIsNotAllowed = 9002
 	// LoginTokenIsWorng for bad login_token
 	LoginTokenIsWorng = 9003
+	// EmailIsWrong for empty email
+	EmailIsWrong = 9004
+	// PhoneIsWrong for wrong phone
+	PhoneIsWrong = 9005
 )
