@@ -47,6 +47,12 @@ func (base *Base) Handle(c *gin.Context) {
 		response.ServerError(c, "failed to get params from Context")
 	}
 
+	// Setup for this request
+	context := &models.Context{
+		Context: c,
+		Params:  requestParams,
+	}
+
 	// Dispatch task
 	handler, ok := base.Handlers[requestParams.Action]
 	if !ok {
@@ -55,5 +61,5 @@ func (base *Base) Handle(c *gin.Context) {
 		return
 	}
 
-	handler.Handle(&models.Context{Context: c, Params: requestParams})
+	handler.Handle(context)
 }

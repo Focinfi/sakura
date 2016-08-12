@@ -18,7 +18,7 @@ func (e err) Code() int {
 }
 
 func (e err) Message(locale string) string {
-	return i18n.T("", i18n.Locale(locale))
+	return i18n.T(i18n.Locale(locale), e.messageKey)
 }
 
 // New allocates and returns a new ErrorFunc

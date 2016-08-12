@@ -11,10 +11,12 @@ import (
 func ParseParams(c *gin.Context) {
 	// Parsing Params
 	params := &models.RequestParams{}
-	if err := c.Bind(params); err != nil {
-		response.Failed(c, errors.JSONBodyParsingError, "failed to parsing JOSN boday")
-		c.Abort()
-		return
+	if c.Request.Body != nil {
+		if err := c.BindJSON(params); err != nil {
+			response.Failed(c, errors.JSONBodyParsingError, "failed to parsing JOSN boday")
+			c.Abort()
+			return
+		}
 	}
 
 	c.Set("params", params)

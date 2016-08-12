@@ -18,4 +18,6 @@ const (
 	PhoneIsWrong = 9005
 	// PhoneVerificationCodeIsWrong for wrong verification code
 	PhoneVerificationCodeIsWrong = 9006
+	// UserAlreadyExists for duplicated user creatation
+	UserAlreadyExists = 9007
 )
