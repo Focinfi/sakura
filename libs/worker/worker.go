@@ -14,51 +14,52 @@ type OnErrorFunc func(err error)
 
 // Worker for worker
 type Worker struct {
-	Number    uint
+	Pool      pool.Pool
 	Retry     bool
-	Queue     string
-	Work      pool.WorkFunc
+	Works     []pool.WorkFunc
 	OnSuccess OnSuccessFunc
 	OnError   OnErrorFunc
 }
 
 // PerformAsync performs immediately
-func (worker *Worker) PerformAsync() {
-	p := pool.NewLimited(worker.Number)
-	defer p.Close()
-DO:
-	work := p.Queue(worker.Work)
-	work.Wait()
-	if err := work.Error(); err != nil && worker.Retry {
-		worker.Retry = false
-		goto DO
+func (worker *Worker) PerformAsync(work pool.WorkFunc) {
+	if worker.Pool == nil {
+		worker.Pool = pool.NewLimited(10)
+		defer worker.Pool.Close()
 	}
 
-	if err := work.Error(); err != nil {
+	worker.Works = append(worker.Works, work)
+	task := worker.Pool.Queue(work)
+	task.Wait()
+	if err := task.Error(); err != nil && worker.Retry {
+		again := worker.Pool.Queue(work)
+		again.Wait()
+	}
+
+	if err := task.Error(); err != nil && worker.OnSuccess != nil {
 		worker.OnError(err)
-	} else {
-		worker.OnSuccess(work.Value())
+	} else if worker.OnError != nil {
+		worker.OnSuccess(task.Value())
 	}
 }
 
 // PerformIn performs work in the given second
-func (worker Worker) PerformIn(second int) {
+func (worker Worker) PerformIn(second int, work pool.WorkFunc) {
 	time.AfterFunc(time.Second*time.Duration(second), func() {
-		worker.PerformAsync()
+		worker.PerformAsync(work)
 	})
 }
 
 // PerformAt performs work at the given moment
-func (worker Worker) PerformAt(at time.Time) {
-	worker.PerformIn(int(at.Unix() - time.Now().Unix()))
+func (worker Worker) PerformAt(at time.Time, work pool.WorkFunc) {
+	worker.PerformIn(int(at.Unix()-time.Now().Unix()), work)
 }
 
 // New allocates and returns a new Worker
-func New(num uint) *Worker {
+func New(p pool.Pool) *Worker {
 	return &Worker{
-		Number:    num,
-		Queue:     "default",
-		Work:      func(wu pool.WorkUnit) (interface{}, error) { return nil, nil },
+		Pool:      p,
+		Works:     []pool.WorkFunc{},
 		OnSuccess: func(result interface{}) {},
 		OnError:   func(err error) {},
 	}
@@ -67,18 +68,6 @@ func New(num uint) *Worker {
 // SetRetry set retry
 func (worker *Worker) SetRetry(retry bool) *Worker {
 	worker.Retry = retry
-	return worker
-}
-
-// SetQueue set queue
-func (worker *Worker) SetQueue(queue string) *Worker {
-	worker.Queue = queue
-	return worker
-}
-
-// SetWork set work
-func (worker *Worker) SetWork(work pool.WorkFunc) *Worker {
-	worker.Work = work
 	return worker
 }
 

@@ -47,10 +47,12 @@ func CreateUser(params *models.RequestParams) errors.Error {
 	if params.RegistrationType == models.EmailRegistration {
 		tkn := token.New("email_verification", 3600*24*30).Set("email", params.User.Email)
 
-		workers.NewEmailWorker(translator.T("please_verify_your_email"),
+		email := workers.SendEmail(
+			translator.T("please_verify_your_email"),
 			translator.T("verification_email_boday", tkn),
-			params.User.Email).
-			PerformAsync()
+			params.User.Email,
+		)
+		workers.EmailWorker.PerformAsync(email)
 	}
 
 	return nil

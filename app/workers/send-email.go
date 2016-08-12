@@ -45,9 +45,11 @@ func SendEmail(subject, body string, to ...string) pool.WorkFunc {
 }
 
 // NewEmailWorker worker
-func NewEmailWorker(subject, body string, to ...string) *worker.Worker {
+func NewEmailWorker() *worker.Worker {
 	return worker.
-		New(config.Config.DeaultWorkerNum).
-		SetWork(SendEmail(subject, body, to...)).
+		New(defaultQueue).
 		SetRetry(true)
 }
+
+// EmailWorker for send email worker
+var EmailWorker = NewEmailWorker()
