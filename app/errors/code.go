@@ -20,4 +20,10 @@ const (
 	PhoneVerificationCodeIsWrong = 9006
 	// UserAlreadyExists for duplicated user creatation
 	UserAlreadyExists = 9007
+	// PasswordIsEmpty for empty password
+	PasswordIsEmpty = 9008
+	// EmailIsNonexistent for nonexistent email
+	EmailIsNonexistent = 9009
+	// PasswordIsWrong for wrong password
+	PasswordIsWrong = 9010
 )

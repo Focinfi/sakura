@@ -14,21 +14,28 @@ import (
 func CreateUser(params *models.RequestParams) errors.Error {
 	translator := i18n.NewTranslator(i18n.Locale(params.Locale))
 
+	// check params completeness
+	if params.User.Password == "" {
+		return errors.New(errors.PasswordIsEmpty, "password_is_empty")
+	}
+
 	switch params.RegistrationType {
 	case models.EmailRegistration:
 		if !utils.IsEmail(params.User.Email) {
 			return errors.New(errors.EmailIsWrong, "email_is_wrong")
 		}
+		params.User.Phone = ""
 	case models.PhoneRegistration:
 		if !utils.IsPhone(params.User.Phone) {
 			return errors.New(errors.PhoneIsWrong, "phone_is_wrong")
 		}
 		// check verification code
-		if ok, err := phoneVerifier.VerifyCode(params.User.Phone, params.VerificationCode); err != nil {
+		if ok, err := VerifyCode(params.User.Phone, params.VerificationCode); err != nil {
 			return errors.InternalServerError
 		} else if !ok {
 			return errors.New(errors.PhoneVerificationCodeIsWrong, "phone_verification_code_is_wrong")
 		}
+		params.User.Email = ""
 	}
 
 	// check uniqueness
