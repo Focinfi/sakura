@@ -1,5 +1,7 @@
 package services
 
+import "github.com/Focinfi/sakura/app/log"
+
 // PhoneVerifier contains SendCode and VerifyCode
 type PhoneVerifier interface {
 	SendCode(phone string) error
@@ -24,12 +26,16 @@ func (verifier *NEPhoneVerifier) VerifyCode(phone, code string) (bool, error) {
 	return true, nil
 }
 
-// SendCode sends code
-func SendCode(phone string) error {
+// SendPhoneCode sends code
+func SendPhoneCode(phone string) error {
 	return phoneVerifier.SendCode(phone)
 }
 
-// VerifyCode verifies code
-func VerifyCode(phone, code string) (bool, error) {
-	return phoneVerifier.VerifyCode(phone, code)
+// VerifyPhoneCode verifies code
+func VerifyPhoneCode(phone, code string) (ok bool, err error) {
+	ok, err = phoneVerifier.VerifyCode(phone, code)
+	if err != nil {
+		log.ThirdPartyServiceError("verify_phone_code", err, nil, phone, code)
+	}
+	return
 }

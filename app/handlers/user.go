@@ -11,7 +11,7 @@ func NewUser(c *models.Context) {
 
 }
 
-// CreateUser for create action
+// CreateUser handles create action
 func CreateUser(c *models.Context) {
 	if err := services.CreateUser(c.Params); err != nil {
 		response.Failed(c.Context, err.Code(), err.Message(c.Params.Locale))

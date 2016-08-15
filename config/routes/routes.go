@@ -13,9 +13,18 @@ func Routes(server *gin.Engine) {
 		handlers.AccessAuth,
 	)
 
+	// common handler
+	commonHandler := handlers.NewBase()
+	commonHandler.AddHandlerFunc("send_phone_verification_code", handlers.SendPhoneVerificationCode)
+	commonHandler.AddHandlerFunc("verify_phone_code", handlers.VerifyPhoneCode)
+	api.POST("common", commonHandler)
+
 	// user handler
 	userHandler := handlers.NewBase()
 	userHandler.AddHandlerFunc("create", handlers.CreateUser)
-
 	api.POST("user", userHandler.Handle)
+
+	// login handler
+	loginHandler := handlers.NewBase()
+	loginHandler.AddHandlerFunc("login", handlers.Login)
 }

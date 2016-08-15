@@ -53,9 +53,9 @@ func LibError(lib string, message interface{}) {
 }
 
 // ThirdPartyServiceError for third-party service error
-func ThirdPartyServiceError(thirdPartyService string, message interface{}) {
+func ThirdPartyServiceError(thirdPartyService string, err error, message interface{}, params ...string) {
 	DBErrorLogger.
-		WithFields(logrus.Fields{"third_party_service": thirdPartyService}).
+		WithFields(logrus.Fields{"third_party_service": thirdPartyService, "error": err, "params": params}).
 		Info(message)
 }
 

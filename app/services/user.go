@@ -31,7 +31,7 @@ func CreateUser(params *models.RequestParams) errors.Error {
 			return errors.New(errors.PhoneIsWrong, "phone_is_wrong")
 		}
 		// check verification code
-		if ok, err := VerifyCode(params.User.Phone, params.VerificationCode); err != nil {
+		if ok, err := VerifyPhoneCode(params.User.Phone, params.VerificationCode); err != nil {
 			return errors.InternalServerError
 		} else if !ok {
 			return errors.New(errors.PhoneVerificationCodeIsWrong, "phone_verification_code_is_wrong")
