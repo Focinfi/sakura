@@ -1,9 +1,10 @@
 package app
 
 const (
-	// UserIDString for user_id
-	UserIDString = "user_id"
+	// UserIDStr for user_id
+	UserIDStr = "user_id"
 	// NameStr for name
-	NameStr  = "name"
+	NameStr = "name"
+	// LoginStr for login
 	LoginStr = "login"
 )

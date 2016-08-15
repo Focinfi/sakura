@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/Focinfi/sakura/app/log"
 	"github.com/Focinfi/sakura/db"
 	"github.com/Focinfi/sakura/libs/utils"
 	"github.com/icrowley/fake"
@@ -28,8 +29,11 @@ func (user *User) DisplayName() string {
 // CheckUniqueness for new User
 func (user *User) CheckUniqueness() (bool, error) {
 	u := &User{}
-	err := db.DB.Where(&User{Email: user.Email, Phone: user.Phone}).First(u).Error
-	return u.ID == 0, err
+	query := db.DB.Where(&User{Email: user.Email, Phone: user.Phone}).First(u)
+	if query.Error != nil {
+		log.DBError(query.Value, "failed to get user")
+	}
+	return u.ID == 0, query.Error
 }
 
 // BeforeCreate adds uuid and set default name for new user

@@ -1,11 +1,15 @@
 package handlers
 
 import (
+	"strconv"
+
 	"github.com/Focinfi/sakura/app/errors"
 	"github.com/Focinfi/sakura/app/i18n"
+	"github.com/Focinfi/sakura/app/log"
 	"github.com/Focinfi/sakura/app/models"
 	"github.com/Focinfi/sakura/app/response"
 	"github.com/Focinfi/sakura/db"
+	"github.com/Focinfi/sakura/libs/token"
 	"github.com/Focinfi/sakura/libs/utils"
 )
 
@@ -18,7 +22,9 @@ func Login(c *models.Context) {
 		user = &models.User{Email: c.Params.Email}
 	}
 
-	if err := db.DB.First(user).Error; err != nil {
+	query := db.DB.First(user)
+	if query.Error != nil {
+		log.DBError(query.Value, "failed to get user")
 		response.ServerError(c.Context, "failed to query db")
 		return
 	}
@@ -36,5 +42,11 @@ func Login(c *models.Context) {
 		return
 	}
 
-	response.OK(c.Context, nil)
+	tkn, err := token.New("login", 3600*24*30).Set("user_id", strconv.Itoa(int(user.ID))).Sign()
+	if err != nil {
+		log.LibError("token", "failed to create a login token")
+		response.ServerError(c.Context, "failed to make login token")
+		return
+	}
+	response.OK(c.Context, response.Login{Token: tkn})
 }

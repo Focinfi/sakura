@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/Focinfi/sakura/app/errors"
 	"github.com/Focinfi/sakura/app/i18n"
+	"github.com/Focinfi/sakura/app/log"
 	"github.com/Focinfi/sakura/app/models"
 	"github.com/Focinfi/sakura/app/workers"
 	"github.com/Focinfi/sakura/db"
@@ -46,13 +47,19 @@ func CreateUser(params *models.RequestParams) errors.Error {
 	}
 
 	// create user
-	if err := db.DB.Create(params.User); err != nil {
+	query := db.DB.Create(params.User)
+	if query.Error != nil {
+		log.DBError(query.Value, "failed to create a user")
 		return errors.InternalServerError
 	}
 
 	// send verification code for email registration
 	if params.RegistrationType == models.EmailRegistration {
-		tkn := token.New("email_verification", 3600*24*30).Set("email", params.User.Email)
+		tkn, err := token.New("email_verification", 3600*24*30).Set("email", params.User.Email).Sign()
+		if err != nil {
+			log.LibError("token", "faild to create a email_verification token")
+			return errors.InternalServerError
+		}
 
 		email := workers.SendEmail(
 			translator.T("please_verify_your_email"),
