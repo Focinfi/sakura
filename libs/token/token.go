@@ -55,7 +55,7 @@ func CheckSimple(tkn string, name string) bool {
 
 // CheckWithVal checks all Claims valus with the given key-val
 func CheckWithVal(tkn, key, val string) bool {
-	token, err := parse(tkn)
+	token, err := Parse(tkn)
 	if err != nil || !token.Valid {
 		return false
 	}
@@ -64,7 +64,7 @@ func CheckWithVal(tkn, key, val string) bool {
 
 // CheckWithVals checks all Claims valus with the given map vals
 func CheckWithVals(tkn string, vals map[string]string) bool {
-	token, err := parse(tkn)
+	token, err := Parse(tkn)
 	if err != nil || !token.Valid {
 		return false
 	}
@@ -78,11 +78,32 @@ func CheckWithVals(tkn string, vals map[string]string) bool {
 	return true
 }
 
-func parse(tkn string) (*jwt.Token, error) {
+// Parse parses the given tkn to a new Token
+func Parse(tkn string) (*jwt.Token, error) {
 	return jwt.Parse(tkn, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 		return []byte(config.Config.BaseSecret), nil
 	})
+}
+
+// ParseParams parses the tkn to the jwt.MapClaims
+func ParseParams(tkn string) (jwt.MapClaims, error) {
+	t, err := Parse(tkn)
+	if err != nil {
+		return nil, err
+	}
+
+	return t.Claims.(jwt.MapClaims), nil
+}
+
+// GetParam get param from the given  tkn
+func GetParam(tkn, k string) string {
+	m, err := ParseParams(tkn)
+	if err != nil {
+		return ""
+	}
+
+	return m[k].(string)
 }

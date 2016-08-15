@@ -39,9 +39,9 @@ func LogicError(funcName string, message interface{}) {
 }
 
 // DBError log databse error
-func DBError(sql interface{}, message interface{}) {
+func DBError(sql interface{}, err error, message interface{}) {
 	DBErrorLogger.
-		WithFields(logrus.Fields{"sql": sql}).
+		WithFields(logrus.Fields{"sql": sql, "error": err}).
 		Fatal(message)
 }
 

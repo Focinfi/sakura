@@ -49,7 +49,7 @@ func CreateUser(params *models.RequestParams) errors.Error {
 	// create user
 	query := db.DB.Create(params.User)
 	if query.Error != nil {
-		log.DBError(query.Value, "failed to create a user")
+		log.DBError(query.Value, query.Error, "failed to create a user")
 		return errors.InternalServerError
 	}
 

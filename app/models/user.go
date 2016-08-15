@@ -31,7 +31,7 @@ func (user *User) CheckUniqueness() (bool, error) {
 	u := &User{}
 	query := db.DB.Where(&User{Email: user.Email, Phone: user.Phone}).First(u)
 	if query.Error != nil {
-		log.DBError(query.Value, "failed to get user")
+		log.DBError(query.Value, query.Error, "failed to get user")
 	}
 	return u.ID == 0, query.Error
 }

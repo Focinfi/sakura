@@ -24,7 +24,7 @@ func Login(c *models.Context) {
 
 	query := db.DB.First(user)
 	if query.Error != nil {
-		log.DBError(query.Value, "failed to get user")
+		log.DBError(query.Value, query.Error, "failed to get user")
 		response.ServerError(c.Context, "failed to query db")
 		return
 	}

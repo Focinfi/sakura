@@ -17,7 +17,7 @@ func Routes(server *gin.Engine) {
 	commonHandler := handlers.NewBase()
 	commonHandler.AddHandlerFunc("send_phone_verification_code", handlers.SendPhoneVerificationCode)
 	commonHandler.AddHandlerFunc("verify_phone_code", handlers.VerifyPhoneCode)
-	api.POST("common", commonHandler)
+	api.POST("common", commonHandler.Handle)
 
 	// user handler
 	userHandler := handlers.NewBase()
@@ -27,4 +27,7 @@ func Routes(server *gin.Engine) {
 	// login handler
 	loginHandler := handlers.NewBase()
 	loginHandler.AddHandlerFunc("login", handlers.Login)
+
+	public := server.Group("public")
+	public.GET("verifyEmail/:token", handlers.VerifyEmail)
 }
