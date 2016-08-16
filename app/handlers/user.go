@@ -28,6 +28,7 @@ func CreateUser(c *models.Context) {
 
 // VerifyEmail handlers verify_email action
 func VerifyEmail(c *gin.Context) {
+	// TODO: replace string with HTML
 	tkn := c.Query("token")
 
 	if !token.CheckSimple(tkn, "email_verification") {
