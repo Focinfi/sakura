@@ -6,7 +6,16 @@ import (
 )
 
 func init() {
-	migrate(&models.User{})
+	migrate(
+		&models.User{},
+		&models.ActivityNote{},
+		&models.Tag{},
+		&models.ActivityNoteTag{},
+		&models.ActivityCategory{},
+		&models.ActivityNoteCategory{},
+		&models.Feeling{},
+		&models.UserFeeling{},
+	)
 }
 
 func migrate(tables ...interface{}) {
