@@ -25,6 +25,11 @@ func Routes(server *gin.Engine) {
 	userHandler.AddHandlerFunc("login", handlers.Login)
 	api.POST("user", userHandler.Handle)
 
+	// tip handler
+	tipHandler := handlers.NewBase()
+	tipHandler.AddHandlerFunc("generate_new", handlers.GenerateTip)
+	api.POST("tip", tipHandler.Handle)
+
 	public := server.Group("public")
 	public.GET("verifyEmail/:token", handlers.VerifyEmail)
 }

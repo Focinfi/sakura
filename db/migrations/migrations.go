@@ -15,6 +15,7 @@ func init() {
 		&models.ActivityNoteCategory{},
 		&models.Feeling{},
 		&models.UserFeeling{},
+		&models.Tip{},
 	)
 }
 

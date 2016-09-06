@@ -35,21 +35,21 @@ var ThirdPartyServiceErrorLogger = logrus.New()
 func LogicError(funcName string, message interface{}) {
 	LogicErrorLogger.
 		WithFields(logrus.Fields{"function_name": funcName}).
-		Fatal(message)
+		Error(message)
 }
 
 // DBError log databse error
 func DBError(sql interface{}, err error, message interface{}) {
 	DBErrorLogger.
 		WithFields(logrus.Fields{"sql": sql, "error": err}).
-		Fatal(message)
+		Error(message)
 }
 
 // LibError for lib error
 func LibError(lib string, message interface{}) {
 	DBErrorLogger.
 		WithFields(logrus.Fields{"lib": lib}).
-		Fatal(message)
+		Error(message)
 }
 
 // ThirdPartyServiceError for third-party service error

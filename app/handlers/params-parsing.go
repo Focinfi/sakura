@@ -25,5 +25,5 @@ func ParseParams(c *gin.Context) {
 func paramsFromContext(c *gin.Context) (*models.RequestParams, bool) {
 	params, has := c.Get("params")
 	requestParams, ok := params.(*models.RequestParams)
-	return requestParams, !has || !ok
+	return requestParams, has && ok
 }

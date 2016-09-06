@@ -9,14 +9,13 @@ import (
 // Response for response struct
 type Response struct {
 	Code    int         `json:"code,string"`
-	Action  interface{} `json:"action,string"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
 }
 
 // JSON write data via gin.Context
 func JSON(c *gin.Context, response Response) {
-	response.Action, _ = c.Get("action")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.JSON(http.StatusOK, response)
 }
 

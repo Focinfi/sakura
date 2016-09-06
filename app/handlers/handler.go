@@ -17,7 +17,7 @@ type HandlerFunc func(c *models.Context)
 
 // Handle impelements Handler
 func (f HandlerFunc) Handle(c *models.Context) {
-	f.Handle(c)
+	f(c)
 }
 
 // Base for basic handling
